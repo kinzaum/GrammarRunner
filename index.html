@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Grammar Runner - Game 3</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #111;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* The Thumbnail Button */
+        .launcher {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .launcher:hover { transform: scale(1.05); }
+
+        .launcher img {
+            width: 320px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,255,204,0.3);
+            border: 3px solid #444;
+        }
+
+        /* The Fullscreen Modal */
+        #gameModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: black;
+            z-index: 1000;
+        }
+
+        #gameFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* --- THE LANDSCAPE FORCE --- */
+        /* If the phone/iPad is held vertically, we rotate the game 90 degrees */
+        @media screen and (orientation: portrait) {
+            .landscape-force {
+                transform: rotate(90deg);
+                transform-origin: center;
+                width: 100vh !important;
+                height: 100vw !important;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-top: -50vw;
+                margin-left: -50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="launcher" onclick="launchGame()">
+        <img src="game3.png" alt="Start Grammar Runner">
+        <h2>Grammar Runner starten</h2>
+    </div>
+
+    <div id="gameModal">
+        <span class="close-btn" onclick="closeGame()">&times;</span>
+        <div id="rotateContainer" style="width:100%; height:100%;">
+            <iframe id="gameFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        function launchGame() {
+            // Pointing directly to your single folder
+            document.getElementById('gameFrame').src = "Game3/index.html";
+            document.getElementById('gameModal').style.display = 'block';
+            
+            // Add the rotation logic container
+            document.getElementById('rotateContainer').classList.add('landscape-force');
+
+            // Request Fullscreen (Works on PC and most Androids)
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            }
+        }
+
+        function closeGame() {
+            document.getElementById('gameFrame').src = "";
+            document.getElementById('gameModal').style.display = 'none';
+            
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>

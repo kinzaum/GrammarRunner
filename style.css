@@ -7,6 +7,16 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden;
+}
+
+#boulder {
+    position: absolute;
+    top: 60%;
+    left: -150px;
+    width: 120px;
+    z-index: 5;
+    /* We handle rotation via JS, so no transition here */
 }
 
 #sentence-container {
@@ -16,6 +26,7 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     font-size: 48px;
     margin-bottom: 20px;
+    z-index: 10;
 }
 
 .word { color: #ccc; transition: all 0.3s ease; }
@@ -38,6 +49,5 @@ button {
     background: #3498db;
     color: white;
     cursor: pointer;
-    transition: background 0.3s;
+    margin-bottom: 20px;
 }
-button:hover { background: #2980b9; }

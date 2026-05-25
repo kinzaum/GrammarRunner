@@ -1,11 +1,13 @@
 const btn = document.getElementById('toggleBtn');
 const status = document.getElementById('status');
 const container = document.getElementById('sentence-container');
+const boulder = document.getElementById('boulder');
 
 const targetSentence = "I like to read";
 const words = targetSentence.split(" ");
 let currentWordIndex = 0;
 let isListening = false;
+let moveInterval;
 
 // Initialize Sentence UI
 words.forEach((word, index) => {
@@ -16,8 +18,29 @@ words.forEach((word, index) => {
     container.appendChild(span);
 });
 
-// Set initial active state
 document.getElementById('word-0').classList.add('active');
+
+function moveBoulder() {
+    let position = -150;
+    const speed = 2;
+
+    // Clear any existing interval before starting a new one
+    clearInterval(moveInterval);
+
+    moveInterval = setInterval(() => {
+        position += speed;
+        
+        // Update horizontal position
+        boulder.style.left = position + 'px';
+        
+        // Update rotation based on position
+        boulder.style.transform = `rotate(${position * 2}deg)`;
+
+        if (position >= window.innerWidth) {
+            clearInterval(moveInterval);
+        }
+    }, 20);
+}
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
@@ -33,11 +56,11 @@ recognition.onresult = (event) => {
     if (lastWordSpoken === targetWord) {
         wordElement.className = 'word correct';
         currentWordIndex++;
-        
         if (currentWordIndex < words.length) {
             document.getElementById(`word-${currentWordIndex}`).classList.add('active');
         } else {
-            status.innerText = "Status: You did it!";
+            status.innerText = "Status: Escaped!";
+            clearInterval(moveInterval);
             recognition.stop();
         }
     } else {
@@ -48,10 +71,12 @@ recognition.onresult = (event) => {
 btn.addEventListener('click', () => {
     if (isListening) {
         recognition.stop();
+        clearInterval(moveInterval);
         btn.innerText = "Start Listening";
         status.innerText = "Status: Idle";
     } else {
         recognition.start();
+        moveBoulder();
         btn.innerText = "Stop Listening";
         status.innerText = "Status: Listening...";
     }

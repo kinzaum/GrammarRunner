@@ -1,54 +1,29 @@
+// 1. VARIABLES (Top of file)
 const btn = document.getElementById('toggleBtn');
-const status = document.getElementById('status');
-const container = document.getElementById('sentence-container');
-
 const targetSentence = "I like to read";
 const words = targetSentence.split(" ");
 let currentWordIndex = 0;
-let isListening = false;
 
-// Initialize Sentence UI
+// 2. INITIALIZATION (Middle of file)
 words.forEach((word, index) => {
-    const span = document.createElement('span');
-    span.innerText = word;
-    span.className = 'word';
-    span.id = `word-${index}`;
-    container.appendChild(span);
+    // ... logic to create span elements ...
 });
+document.getElementById('word-0').classList.add('active'); // Add this!
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
-recognition.continuous = true;
-recognition.interimResults = true;
-
+// 3. LOGIC (Inside your existing function)
 recognition.onresult = (event) => {
-    const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
-    const lastWordSpoken = transcript.split(" ").pop().toLowerCase();
-    const targetWord = words[currentWordIndex].toLowerCase();
-
-    const wordElement = document.getElementById(`word-${currentWordIndex}`);
-
+    // ... get the last word spoken ...
+    
+    // NEW LOGIC CHUNK:
     if (lastWordSpoken === targetWord) {
         wordElement.className = 'word correct';
         currentWordIndex++;
-        if (currentWordIndex === words.length) {
-            status.innerText = "Status: You did it!";
-            recognition.stop();
+        
+        // Check if there is another word to activate
+        if (currentWordIndex < words.length) {
+            document.getElementById(`word-${currentWordIndex}`).classList.add('active');
         }
     } else {
-        wordElement.className = 'word wrong';
+        wordElement.className = 'word wrong active'; // Keep the red word active
     }
 };
-
-btn.addEventListener('click', () => {
-    if (isListening) {
-        recognition.stop();
-        btn.innerText = "Start Listening";
-        status.innerText = "Status: Idle";
-    } else {
-        recognition.start();
-        btn.innerText = "Stop Listening";
-        status.innerText = "Status: Listening...";
-    }
-    isListening = !isListening;
-});

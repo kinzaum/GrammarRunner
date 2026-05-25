@@ -1,0 +1,6 @@
+#status { font-weight: bold; margin: 10px 0; }
+#sentence-container { margin-top: 20px; font-size: 32px; }
+
+.word { transition: color 0.3s; margin-right: 10px; }
+.correct { color: green; }
+.wrong { color: red; }

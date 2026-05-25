@@ -2,55 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Voice Recognition Tester</title>
-    <style>
-        #status { font-weight: bold; margin: 10px 0; }
-        #output { border: 1px solid #ccc; padding: 10px; min-height: 50px; width: 300px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <title>Voice Game</title>
 </head>
 <body>
 
     <button id="toggleBtn">Start Listening</button>
     <div id="status">Status: Idle</div>
-    <div id="output">Waiting for speech...</div>
+    
+    <div id="sentence-container"></div>
 
-    <script>
-        const btn = document.getElementById('toggleBtn');
-        const output = document.getElementById('output');
-        const status = document.getElementById('status');
-
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
-
-        recognition.continuous = true;
-        recognition.interimResults = true;
-
-        let isListening = false;
-
-        recognition.onresult = (event) => {
-            let transcript = '';
-            for (let i = event.resultIndex; i < event.results.length; ++i) {
-                transcript += event.results[i][0].transcript;
-            }
-            output.innerText = transcript;
-        };
-
-        btn.addEventListener('click', () => {
-            if (isListening) {
-                recognition.stop();
-                btn.innerText = "Start Listening";
-                status.innerText = "Status: Idle";
-            } else {
-                recognition.start();
-                btn.innerText = "Stop Listening";
-                status.innerText = "Status: Listening...";
-            }
-            isListening = !isListening;
-        });
-
-        recognition.onend = () => {
-            if (isListening) recognition.start(); // Keep listening if active
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

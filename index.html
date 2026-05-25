@@ -2,119 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Grammar Runner - Game 3</title>
+    <title>Voice Recognition Tester</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #111;
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: white;
-            overflow: hidden;
-        }
-
-        /* The Thumbnail Button */
-        .launcher {
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .launcher:hover { transform: scale(1.05); }
-
-        .launcher img {
-            width: 320px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,255,204,0.3);
-            border: 3px solid #444;
-        }
-
-        /* The Fullscreen Modal */
-        #gameModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: black;
-            z-index: 1000;
-        }
-
-        #gameFrame {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            color: white;
-            font-size: 35px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        /* --- THE LANDSCAPE FORCE --- */
-        /* If the phone/iPad is held vertically, we rotate the game 90 degrees */
-        @media screen and (orientation: portrait) {
-            .landscape-force {
-                transform: rotate(90deg);
-                transform-origin: center;
-                width: 100vh !important;
-                height: 100vw !important;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                margin-top: -50vw;
-                margin-left: -50vh;
-            }
-        }
+        #status { font-weight: bold; margin: 10px 0; }
+        #output { border: 1px solid #ccc; padding: 10px; min-height: 50px; width: 300px; }
     </style>
 </head>
 <body>
 
-    <div class="launcher" onclick="launchGame()">
-        <img src="game3.png" alt="Start Death Sentence">
-        <h2>Start Death "Sentence"</h2>
-    </div>
-
-    <div id="gameModal">
-        <span class="close-btn" onclick="closeGame()">&times;</span>
-        <div id="rotateContainer" style="width:100%; height:100%;">
-            <iframe id="gameFrame" src=""></iframe>
-        </div>
-    </div>
+    <button id="toggleBtn">Start Listening</button>
+    <div id="status">Status: Idle</div>
+    <div id="output">Waiting for speech...</div>
 
     <script>
-        function launchGame() {
-            // Pointing directly to your single folder
-            document.getElementById('gameFrame').src = "Game3/index.html";
-            document.getElementById('gameModal').style.display = 'block';
-            
-            // Add the rotation logic container
-            document.getElementById('rotateContainer').classList.add('landscape-force');
+        const btn = document.getElementById('toggleBtn');
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
 
-            // Request Fullscreen (Works on PC and most Androids)
-            let elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            }
-        }
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
 
-        function closeGame() {
-            document.getElementById('gameFrame').src = "";
-            document.getElementById('gameModal').style.display = 'none';
-            
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        let isListening = false;
+
+        recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                transcript += event.results[i][0].transcript;
             }
-        }
+            output.innerText = transcript;
+        };
+
+        btn.addEventListener('click', () => {
+            if (isListening) {
+                recognition.stop();
+                btn.innerText = "Start Listening";
+                status.innerText = "Status: Idle";
+            } else {
+                recognition.start();
+                btn.innerText = "Stop Listening";
+                status.innerText = "Status: Listening...";
+            }
+            isListening = !isListening;
+        });
+
+        recognition.onend = () => {
+            if (isListening) recognition.start(); // Keep listening if active
+        };
     </script>
 </body>
 </html>

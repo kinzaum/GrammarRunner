@@ -13,6 +13,7 @@ let isListening = false;
 let boulderPos = -200;
 let snailPos = 50;
 let snailFrame = 1;
+let boulderInterval; // New variable for independent boulder movement
 
 // Initialize Sentence UI
 words.forEach((word, index) => {
@@ -25,19 +26,28 @@ words.forEach((word, index) => {
 
 document.getElementById('word-0').classList.add('active');
 
-// Function to move both objects forward by a fixed step
-function moveForward() {
-    const step = 50; 
-    boulderPos += step;
-    snailPos += step;
-    
-    // Update positions
-    boulder.style.left = boulderPos + 'px';
+// Boulder moves automatically and independently
+function startBoulder() {
+    clearInterval(boulderInterval);
+    boulderInterval = setInterval(() => {
+        boulderPos += 1; // Slower speed for the boulder
+        boulder.style.left = boulderPos + 'px';
+        boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
+
+        // If boulder catches the snail, game over
+        if (boulderPos >= snailPos) {
+            status.innerText = "Status: Game Over!";
+            recognition.stop();
+            clearInterval(boulderInterval);
+        }
+    }, 20);
+}
+
+// Snail moves ONLY when called
+function moveSnail() {
+    snailPos += 60; // Larger jump for the snail
     snail.style.left = snailPos + 'px';
     
-    // Rotate boulder
-    boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
-
     // Cycle through snail frames
     snailFrame = (snailFrame % 4) + 1;
     snail.src = `snail${snailFrame}.png`;
@@ -57,8 +67,8 @@ recognition.onresult = (event) => {
     if (lastWordSpoken === targetWord) {
         wordElement.className = 'word correct';
         
-        // MOVE ON SUCCESS
-        moveForward();
+        // TRIGGER SNAIL MOVE
+        moveSnail();
         
         currentWordIndex++;
         if (currentWordIndex < words.length) {
@@ -66,20 +76,22 @@ recognition.onresult = (event) => {
         } else {
             status.innerText = "Status: Escaped!";
             recognition.stop();
+            clearInterval(boulderInterval);
         }
     } else {
         wordElement.className = 'word wrong active';
-        // Snail does not move here
     }
 };
 
 btn.addEventListener('click', () => {
     if (isListening) {
         recognition.stop();
+        clearInterval(boulderInterval);
         btn.innerText = "Start Listening";
         status.innerText = "Status: Idle";
     } else {
         recognition.start();
+        startBoulder(); // Start independent movement
         btn.innerText = "Stop Listening";
         status.innerText = "Status: Listening...";
     }

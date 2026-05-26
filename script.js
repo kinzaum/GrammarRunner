@@ -42,6 +42,34 @@ function moveBoulder() {
     }, 20);
 }
 
+function moveCharacter() {
+    let position = -150;
+    const speed = 2;
+    // We will use this to track which of the 4 images to show
+    let frame = 1;
+
+    // Clear any existing interval
+    clearInterval(moveInterval);
+
+    moveInterval = setInterval(() => {
+        position += speed;
+        
+        // Update horizontal position
+        boulder.style.left = position + 'px'; // You can keep the ID 'boulder' or rename it to 'snail'
+        
+        // Cycle through snail1.png, snail2.png, snail3.png, snail4.png
+        // We update the frame every few pixels to keep it smooth
+        if (position % 20 === 0) {
+            frame = (frame % 4) + 1;
+            boulder.src = `snail${frame}.png`;
+        }
+
+        if (position >= window.innerWidth) {
+            clearInterval(moveInterval);
+        }
+    }, 20);
+}
+
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.continuous = true;

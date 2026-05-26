@@ -10,12 +10,20 @@ body {
     overflow: hidden;
 }
 
+#boulder {
+    position: absolute;
+    top: 60%;
+    left: -200px; /* Starts further off-screen */
+    width: 120px;
+    z-index: 5;
+}
+
 #snail {
     position: absolute;
     top: 60%;
-    left: -150px;
+    left: 50px; /* Snail starts further ahead */
     width: 150px;
-    z-index: 5;
+    z-index: 6;
 }
 
 #sentence-container {

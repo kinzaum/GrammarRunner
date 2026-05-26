@@ -1,40 +1,29 @@
 body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    overflow: hidden;
-}
-
-#game-wrapper {
-    width: 100%;
-    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* transform removed */
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
 }
 
 #setup-container {
     margin-top: 20px;
     text-align: center;
     z-index: 10;
-    /* Remove absolute to let flex handle positioning */
+    position: absolute;
+    top: 20px;
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 10px;
-    padding: 20px;
 }
-
 #userInput {
-    width: 500px;
-    height: 80px;
-    font-size: 20px;
+    width: 400px;
+    height: 60px;
     padding: 10px;
     border-radius: 10px;
     border: 1px solid #ccc;
@@ -42,15 +31,15 @@ body {
 
 #game-arena {
     position: relative;
-    width: 100%;
-    height: 350px;
-    margin-top: auto; /* Pushes the floor to the bottom */
-    overflow: hidden;
+    width: 100vw;
+    height: 400px; /* Define a fixed height for the floor */
+    margin-top: auto; /* Push this to the bottom of the flex container */
+    overflow: hidden; /* Keeps things from creating scrollbars */
 }
 
 #snail, #boulder {
     position: absolute;
-    bottom: 0;
+    bottom: 0; /* Always sit on the floor of the arena */
     transition: left 1s ease-out;
 }
 
@@ -67,18 +56,37 @@ body {
 }
 
 #sentence-container {
+    position: absolute;
+    top: 150px; /* Give it space below the buttons */
     width: 80%;
     text-align: center;
+    white-space: pre-line;
     background: white;
     padding: 20px 40px;
     border-radius: 50px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    font-size: 24px;
-    margin: 20px 0;
+    font-size: 24px; /* Reduced font size to fit more text */
+    margin-bottom: 20px;
     z-index: 10;
+    
+    /* ADD THESE LINES */
+    max-width: 80%;      /* Ensure it doesn't span the whole screen width */
+    text-align: center;
+    white-space: normal; /* Allow text to wrap to new lines */
 }
 
-/* Rest of your button and word styles remain the same */
+.word { color: #ccc; transition: all 0.3s ease; }
+.word.active { color: #333; transform: scale(1.1); font-weight: bold; }
+.correct { color: #2ecc71; }
+.wrong { color: #e74c3c; animation: shake 0.3s; }
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+
 button {
     padding: 15px 30px;
     font-size: 18px;
@@ -87,4 +95,5 @@ button {
     background: #3498db;
     color: white;
     cursor: pointer;
+    margin-bottom: 20px;
 }

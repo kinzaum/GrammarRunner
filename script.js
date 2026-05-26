@@ -9,11 +9,13 @@ const words = targetSentence.split(" ");
 let currentWordIndex = 0;
 let isListening = false;
 
-// Movement state variables
+// Positioning
 let boulderPos = -200;
 let snailPos = 50;
+let boulderInterval;
+
+// Animation state
 let snailFrame = 1;
-let boulderInterval; // New variable for independent boulder movement
 
 // Initialize Sentence UI
 words.forEach((word, index) => {
@@ -23,34 +25,28 @@ words.forEach((word, index) => {
     span.id = `word-${index}`;
     container.appendChild(span);
 });
-
 document.getElementById('word-0').classList.add('active');
 
-// Boulder moves automatically and independently
+// CONSTANT ANIMATION LOOP (Runs all the time)
+setInterval(() => {
+    snailFrame = (snailFrame % 4) + 1;
+    snail.src = `snail${snailFrame}.png`;
+}, 200); // 200ms feels like a natural walking pace
+
 function startBoulder() {
     clearInterval(boulderInterval);
     boulderInterval = setInterval(() => {
-        boulderPos += 1; // Slower speed for the boulder
+        boulderPos += 1;
         boulder.style.left = boulderPos + 'px';
         boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
 
-        // If boulder catches the snail, game over
-        if (boulderPos >= snailPos) {
+        // Game Over check
+        if (boulderPos >= snailPos - 50) {
             status.innerText = "Status: Game Over!";
             recognition.stop();
             clearInterval(boulderInterval);
         }
     }, 20);
-}
-
-// Snail moves ONLY when called
-function moveSnail() {
-    snailPos += 60; // Larger jump for the snail
-    snail.style.left = snailPos + 'px';
-    
-    // Cycle through snail frames
-    snailFrame = (snailFrame % 4) + 1;
-    snail.src = `snail${snailFrame}.png`;
 }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -62,13 +58,13 @@ recognition.onresult = (event) => {
     const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
     const lastWordSpoken = transcript.split(" ").pop().toLowerCase();
     const targetWord = words[currentWordIndex].toLowerCase();
-    const wordElement = document.getElementById(`word-${currentWordIndex}`);
-
+    
     if (lastWordSpoken === targetWord) {
-        wordElement.className = 'word correct';
+        document.getElementById(`word-${currentWordIndex}`).className = 'word correct';
         
-        // TRIGGER SNAIL MOVE
-        moveSnail();
+        // TRIGGER SMOOTH MOVE
+        snailPos += 80;
+        snail.style.left = snailPos + 'px';
         
         currentWordIndex++;
         if (currentWordIndex < words.length) {
@@ -79,7 +75,7 @@ recognition.onresult = (event) => {
             clearInterval(boulderInterval);
         }
     } else {
-        wordElement.className = 'word wrong active';
+        document.getElementById(`word-${currentWordIndex}`).className = 'word wrong active';
     }
 };
 
@@ -88,12 +84,10 @@ btn.addEventListener('click', () => {
         recognition.stop();
         clearInterval(boulderInterval);
         btn.innerText = "Start Listening";
-        status.innerText = "Status: Idle";
     } else {
         recognition.start();
-        startBoulder(); // Start independent movement
+        startBoulder();
         btn.innerText = "Stop Listening";
-        status.innerText = "Status: Listening...";
     }
     isListening = !isListening;
 });

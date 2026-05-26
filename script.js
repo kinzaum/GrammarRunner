@@ -9,7 +9,7 @@ const snail = document.getElementById('snail');
 let words = [];
 let currentWordIndex = 0;
 let isListening = false;
-let isGameOver = false;
+let isGameOver = false; // New flag to handle game over state
 
 // Positioning
 let boulderPos = -200;
@@ -17,19 +17,23 @@ let snailPos = 50;
 let boulderInterval;
 let snailFrame = 1;
 
+// Helper to strip punctuation for accurate voice matching
 function cleanWord(str) {
     return str.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
 }
 
+// Function to load the sentence from the text area
 function loadSentence() {
     const text = inputField.value.trim();
     if (!text) return alert("Please type a sentence first!");
 
+    // Reset game state
     container.innerHTML = "";
     currentWordIndex = 0;
-    isGameOver = false;
+    isGameOver = false; // Reset game over flag
     words = text.split(" ");
     
+    // Create UI elements for words
     words.forEach((word, index) => {
         const span = document.createElement('span');
         span.innerText = word + (index < words.length - 1 ? " " : "");
@@ -40,6 +44,7 @@ function loadSentence() {
     
     document.getElementById('word-0').classList.add('active');
     
+    // Reset positions
     boulderPos = -200;
     snailPos = 50;
     boulder.style.left = boulderPos + 'px';
@@ -49,7 +54,9 @@ function loadSentence() {
 
 updateBtn.addEventListener('click', loadSentence);
 
+// Constant Animation Loop
 setInterval(() => {
+    // Only animate walking if the game is still running
     if (!isGameOver) {
         snailFrame = (snailFrame % 4) + 1;
         snail.src = `snail${snailFrame}.png`;
@@ -63,10 +70,11 @@ function startBoulder() {
         boulder.style.left = boulderPos + 'px';
         boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
 
+        // Game Over check
         if (boulderPos >= snailPos - 50) {
-            isGameOver = true;
+            isGameOver = true; // Stop animation
             status.innerText = "Status: Game Over!";
-            snail.src = 'deadsnail.png';
+            snail.src = 'deadsnail.png'; // Show dead image
             recognition.stop();
             clearInterval(boulderInterval);
         }
@@ -79,7 +87,7 @@ recognition.continuous = true;
 recognition.interimResults = true;
 
 recognition.onresult = (event) => {
-    if (isGameOver) return;
+    if (isGameOver) return; // Ignore input if game is over
 
     const results = event.results[event.results.length - 1];
     const transcript = results[0].transcript.toLowerCase();
@@ -90,6 +98,7 @@ recognition.onresult = (event) => {
         if (transcript.includes(targetWord)) {
             document.getElementById(`word-${currentWordIndex}`).className = 'word correct';
             
+            // Move snail forward
             snailPos += 80;
             snail.style.left = snailPos + 'px';
             
@@ -112,6 +121,7 @@ btn.addEventListener('click', () => {
         recognition.stop();
         btn.innerText = "Start Listening";
     } else {
+        // Reset state if restarting after game over
         if (isGameOver) loadSentence();
         
         recognition.start();

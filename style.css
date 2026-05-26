@@ -1,7 +1,90 @@
-CSS
-body { margin: 0; padding: 0; }
-#game-wrapper {
+body {
+    margin: 0;
+    padding: 0;
     width: 100vw;
     height: 100vh;
-    background-color: lightblue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    overflow: hidden;
+}
+
+#game-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* transform removed */
+}
+
+#setup-container {
+    margin-top: 20px;
+    text-align: center;
+    z-index: 10;
+    /* Remove absolute to let flex handle positioning */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+#userInput {
+    width: 500px;
+    height: 80px;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+#game-arena {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    margin-top: auto; /* Pushes the floor to the bottom */
+    overflow: hidden;
+}
+
+#snail, #boulder {
+    position: absolute;
+    bottom: 0;
+    transition: left 1s ease-out;
+}
+
+#snail {
+    left: 50px;
+    width: 150px;
+    z-index: 8;
+}
+
+#boulder {
+    left: -200px;
+    width: 250px;
+    z-index: 6;
+}
+
+#sentence-container {
+    width: 80%;
+    text-align: center;
+    background: white;
+    padding: 20px 40px;
+    border-radius: 50px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    font-size: 24px;
+    margin: 20px 0;
+    z-index: 10;
+}
+
+/* Rest of your button and word styles remain the same */
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
 }

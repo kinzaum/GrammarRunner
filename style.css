@@ -10,12 +10,17 @@ body {
     overflow: hidden;
 }
 
-#boulder {
-    position: absolute;
-    top: 60%;
-    left: -200px; /* Starts further off-screen */
-    width: 120px;
-    z-index: 5;
+#setup-container {
+    margin-top: 20px;
+    text-align: center;
+    z-index: 10;
+}
+#userInput {
+    width: 400px;
+    height: 60px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
 }
 
 #snail {
@@ -26,6 +31,14 @@ body {
     z-index: 6;
     /* This makes the movement smooth */
     transition: left 1s ease-out; 
+}
+
+#boulder {
+    position: absolute;
+    top: 60%;
+    left: -200px; /* Starts further off-screen */
+    width: 120px;
+    z-index: 5;
 }
 
 #sentence-container {

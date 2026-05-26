@@ -37,7 +37,7 @@ body {
     position: absolute;
     top: 60%;
     left: -200px; /* Starts further off-screen */
-    width: 120px;
+    width: 250px;
     z-index: 5;
 }
 

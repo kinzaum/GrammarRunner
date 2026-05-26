@@ -21,9 +21,11 @@ body {
 #snail {
     position: absolute;
     top: 60%;
-    left: 50px; /* Snail starts further ahead */
+    left: 50px;
     width: 150px;
     z-index: 6;
+    /* This makes the movement smooth */
+    transition: left 1s ease-out; 
 }
 
 #sentence-container {

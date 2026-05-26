@@ -1,28 +1,8 @@
 body {
 
-    /* Keep body styles as they are, but remove redundant spacing if needed */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 
-    margin: 0;
-
-    overflow: hidden;
-
-    height: 100vh;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center; /* This centers the wrapper */
-
-}
-
-
-
-#game-wrapper {
-
-    width: 100vw;
-
-    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
 
     display: flex;
 
@@ -30,11 +10,13 @@ body {
 
     align-items: center;
 
-    transform: scale(1.3); /* Scale up by 30% */
+    justify-content: center;
 
-    transform-origin: center center;
+    height: 100vh;
 
-    transition: transform 0.3s ease;
+    margin: 0;
+
+    overflow: hidden;
 
 }
 
@@ -82,13 +64,13 @@ body {
 
     position: relative;
 
-    width: 100%;
+    width: 100vw;
 
-    height: 350px;
+    height: 200px; /* Define a fixed height for the floor */
 
-    margin-top: auto;
+    margin-top: auto; /* Push this to the bottom of the flex container */
 
-    overflow: hidden;
+    overflow: hidden; /* Keeps things from creating scrollbars */
 
 }
 
@@ -213,3 +195,4 @@ button {
     margin-bottom: 20px;
 
 }
+

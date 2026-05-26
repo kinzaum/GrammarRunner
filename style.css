@@ -10,20 +10,11 @@ body {
     overflow: hidden;
 }
 
-#boulder {
-    position: absolute;
-    top: 60%;
-    left: -150px;
-    width: 120px;
-    z-index: 5;
-    /* We handle rotation via JS, so no transition here */
-}
-
 #snail {
     position: absolute;
     top: 60%;
     left: -150px;
-    width: 150px; /* Adjust size to fit your snail */
+    width: 150px;
     z-index: 5;
 }
 

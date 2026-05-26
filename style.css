@@ -32,11 +32,9 @@ body {
     gap: 10px;
 }
 #userInput {
-    width: 400px;
-    height: 60px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    width: 500px; /* Increased from 400px */
+    height: 80px;  /* Increased from 60px */
+    font-size: 20px;
 }
 
 #game-arena {

@@ -14,6 +14,12 @@ body {
     margin-top: 20px;
     text-align: center;
     z-index: 10;
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 #userInput {
     width: 400px;
@@ -25,23 +31,28 @@ body {
 
 #snail {
     position: absolute;
-    top: 60%;
+    top: 75%;
     left: 50px;
     width: 150px;
-    z-index: 6;
+    z-index: 8;
     /* This makes the movement smooth */
     transition: left 1s ease-out; 
 }
 
 #boulder {
     position: absolute;
-    top: 60%;
+    top: 65%;
     left: -200px; /* Starts further off-screen */
     width: 250px;
-    z-index: 5;
+    z-index: 6;
 }
 
 #sentence-container {
+    position: absolute;
+    top: 150px; /* Give it space below the buttons */
+    width: 80%;
+    text-align: center;
+    white-space: pre-line;
     background: white;
     padding: 20px 40px;
     border-radius: 50px;

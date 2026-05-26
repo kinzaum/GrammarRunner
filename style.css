@@ -1,13 +1,22 @@
 body {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    font-family: 'Segoe UI', sans-serif;
+    /* Keep body styles as they are, but remove redundant spacing if needed */
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This centers the wrapper */
+}
+
+#game-wrapper {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
+    transform: scale(1.3); /* Scale up by 30% */
+    transform-origin: center center;
+    transition: transform 0.3s ease;
 }
 
 #setup-container {
@@ -31,10 +40,10 @@ body {
 
 #game-arena {
     position: relative;
-    width: 100vw;
-    height: 400px; /* Define a fixed height for the floor */
-    margin-top: auto; /* Push this to the bottom of the flex container */
-    overflow: hidden; /* Keeps things from creating scrollbars */
+    width: 100%;
+    height: 350px;
+    margin-top: auto;
+    overflow: hidden;
 }
 
 #snail, #boulder {

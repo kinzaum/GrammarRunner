@@ -65,10 +65,20 @@ function startBoulder() {
         boulder.style.left = boulderPos + 'px';
         boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
 
+        // Check if the boulder catches the snail
+        // We use a small threshold (e.g., 50px) to determine if they collide
         if (boulderPos >= snailPos - 50) {
             status.innerText = "Status: Game Over!";
+            
+            // 1. Change the image to the dead snail
+            snail.src = 'deadsnail.png';
+            
+            // 2. Stop the listening and the boulder movement
             recognition.stop();
             clearInterval(boulderInterval);
+            
+            // 3. Optional: Add a visual effect (like a screen shake)
+            document.body.style.animation = "shake 0.5s";
         }
     }, 20);
 }

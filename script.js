@@ -5,6 +5,7 @@ const status = document.getElementById('status');
 const container = document.getElementById('sentence-container');
 const boulder = document.getElementById('boulder');
 const snail = document.getElementById('snail');
+let moveDistance = 100; 
 
 let words = [];
 let currentWordIndex = 0;
@@ -99,7 +100,7 @@ recognition.onresult = (event) => {
             document.getElementById(`word-${currentWordIndex}`).className = 'word correct';
             
             // Move snail forward
-            snailPos += 80;
+            snailPos += moveDistance;
             snail.style.left = snailPos + 'px';
             
             currentWordIndex++;

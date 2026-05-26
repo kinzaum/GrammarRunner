@@ -1,5 +1,6 @@
 body {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: #e0f7fa; /* Soft sky color */
+    background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
     font-family: 'Segoe UI', sans-serif;
     display: flex;
     flex-direction: column;
@@ -13,6 +14,14 @@ body {
 
 
 #setup-container {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #3498db;
+    padding: 25px;
+    border-radius: 15px;
+    line-height: 2;
+    /* Smooth transition for when words change */
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     margin-top: 20px;
     text-align: center;
     z-index: 10;
@@ -38,6 +47,8 @@ body {
     height: 400px; /* Define a fixed height for the floor */
     margin-top: auto; /* Push this to the bottom of the flex container */
     overflow: hidden; /* Keeps things from creating scrollbars */
+    border-bottom: 8px solid #8d6e63; /* Adds a "ground" line */
+    background: rgba(255, 255, 255, 0.2);
 }
 
 #snail, #boulder {
@@ -78,8 +89,16 @@ body {
     white-space: normal; /* Allow text to wrap to new lines */
 }
 
-.word { color: #ccc; transition: all 0.3s ease; }
-.word.active { color: #333; transform: scale(1.1); font-weight: bold; }
+.word { 
+    color: #b0bec5; 
+    font-size: 28px;
+    transition: all 0.3s ease; 
+}
+.word.active { 
+    color: #34495e; 
+    text-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+    font-weight: 800; 
+}
 .correct { color: #2ecc71; }
 .wrong { color: #e74c3c; animation: shake 0.3s; }
 
@@ -95,9 +114,17 @@ button {
     font-size: 18px;
     border: none;
     border-radius: 25px;
-    background: #3498db;
+    background: #ff7043; /* Warm accent color */
     color: white;
     cursor: pointer;
     margin-bottom: 20px;
+
+    box-shadow: 0 4px #d84315; /* 3D button effect */
+    transition: transform 0.1s;
+}
+
+button:active {
+    transform: translateY(4px);
+    box-shadow: none;
 }
 

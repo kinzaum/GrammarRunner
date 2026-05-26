@@ -8,7 +8,11 @@ const targetSentence = "I like to read";
 const words = targetSentence.split(" ");
 let currentWordIndex = 0;
 let isListening = false;
-let moveInterval;
+
+// Movement state variables
+let boulderPos = -200;
+let snailPos = 50;
+let snailFrame = 1;
 
 // Initialize Sentence UI
 words.forEach((word, index) => {
@@ -21,36 +25,22 @@ words.forEach((word, index) => {
 
 document.getElementById('word-0').classList.add('active');
 
-function moveGameObjects() {
-    let boulderPos = -200;
-    let snailPos = 50;
-    let snailFrame = 1;
+// Function to move both objects forward by a fixed step
+function moveForward() {
+    const step = 50; 
+    boulderPos += step;
+    snailPos += step;
+    
+    // Update positions
+    boulder.style.left = boulderPos + 'px';
+    snail.style.left = snailPos + 'px';
+    
+    // Rotate boulder
+    boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
 
-    // Clear any existing interval
-    clearInterval(moveInterval);
-
-    moveInterval = setInterval(() => {
-        boulderPos += 2;
-        snailPos += 2;
-        
-        // Move both elements
-        boulder.style.left = boulderPos + 'px';
-        snail.style.left = snailPos + 'px';
-        
-        // Rotate the boulder
-        boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
-
-        // Cycle through snail frames (1-4) every 20 pixels
-        if (boulderPos % 20 === 0) {
-            snailFrame = (snailFrame % 4) + 1;
-            snail.src = `snail${snailFrame}.png`;
-        }
-
-        // End game if boulder crosses screen
-        if (boulderPos >= window.innerWidth) {
-            clearInterval(moveInterval);
-        }
-    }, 20);
+    // Cycle through snail frames
+    snailFrame = (snailFrame % 4) + 1;
+    snail.src = `snail${snailFrame}.png`;
 }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -66,28 +56,30 @@ recognition.onresult = (event) => {
 
     if (lastWordSpoken === targetWord) {
         wordElement.className = 'word correct';
+        
+        // MOVE ON SUCCESS
+        moveForward();
+        
         currentWordIndex++;
         if (currentWordIndex < words.length) {
             document.getElementById(`word-${currentWordIndex}`).classList.add('active');
         } else {
             status.innerText = "Status: Escaped!";
-            clearInterval(moveInterval);
             recognition.stop();
         }
     } else {
         wordElement.className = 'word wrong active';
+        // Snail does not move here
     }
 };
 
 btn.addEventListener('click', () => {
     if (isListening) {
         recognition.stop();
-        clearInterval(moveInterval);
         btn.innerText = "Start Listening";
         status.innerText = "Status: Idle";
     } else {
         recognition.start();
-        moveGameObjects();
         btn.innerText = "Stop Listening";
         status.innerText = "Status: Listening...";
     }

@@ -46,9 +46,14 @@ body {
     padding: 20px 40px;
     border-radius: 50px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    font-size: 48px;
+    font-size: 24px; /* Reduced font size to fit more text */
     margin-bottom: 20px;
     z-index: 10;
+    
+    /* ADD THESE LINES */
+    max-width: 80%;      /* Ensure it doesn't span the whole screen width */
+    text-align: center;
+    white-space: normal; /* Allow text to wrap to new lines */
 }
 
 .word { color: #ccc; transition: all 0.3s ease; }

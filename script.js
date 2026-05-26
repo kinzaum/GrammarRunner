@@ -1,7 +1,7 @@
 const btn = document.getElementById('toggleBtn');
 const status = document.getElementById('status');
 const container = document.getElementById('sentence-container');
-const boulder = document.getElementById('boulder');
+const snail = document.getElementById('snail');
 
 const targetSentence = "I like to read";
 const words = targetSentence.split(" ");
@@ -20,32 +20,9 @@ words.forEach((word, index) => {
 
 document.getElementById('word-0').classList.add('active');
 
-function moveBoulder() {
-    let position = -150;
-    const speed = 2;
-
-    // Clear any existing interval before starting a new one
-    clearInterval(moveInterval);
-
-    moveInterval = setInterval(() => {
-        position += speed;
-        
-        // Update horizontal position
-        boulder.style.left = position + 'px';
-        
-        // Update rotation based on position
-        boulder.style.transform = `rotate(${position * 2}deg)`;
-
-        if (position >= window.innerWidth) {
-            clearInterval(moveInterval);
-        }
-    }, 20);
-}
-
 function moveCharacter() {
     let position = -150;
     const speed = 2;
-    // We will use this to track which of the 4 images to show
     let frame = 1;
 
     // Clear any existing interval
@@ -55,13 +32,12 @@ function moveCharacter() {
         position += speed;
         
         // Update horizontal position
-        boulder.style.left = position + 'px'; // You can keep the ID 'boulder' or rename it to 'snail'
+        snail.style.left = position + 'px'; 
         
-        // Cycle through snail1.png, snail2.png, snail3.png, snail4.png
-        // We update the frame every few pixels to keep it smooth
+        // Cycle frames: Switch image every 20 pixels of movement
         if (position % 20 === 0) {
             frame = (frame % 4) + 1;
-            boulder.src = `snail${frame}.png`;
+            snail.src = `snail${frame}.png`;
         }
 
         if (position >= window.innerWidth) {
@@ -104,7 +80,7 @@ btn.addEventListener('click', () => {
         status.innerText = "Status: Idle";
     } else {
         recognition.start();
-        moveBoulder();
+        moveCharacter();
         btn.innerText = "Stop Listening";
         status.innerText = "Status: Listening...";
     }

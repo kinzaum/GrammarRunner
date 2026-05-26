@@ -9,6 +9,7 @@ const snail = document.getElementById('snail');
 let words = [];
 let currentWordIndex = 0;
 let isListening = false;
+let isGameOver = false; // New flag to handle game over state
 
 // Positioning
 let boulderPos = -200;
@@ -29,6 +30,7 @@ function loadSentence() {
     // Reset game state
     container.innerHTML = "";
     currentWordIndex = 0;
+    isGameOver = false; // Reset game over flag
     words = text.split(" ");
     
     // Create UI elements for words
@@ -54,8 +56,11 @@ updateBtn.addEventListener('click', loadSentence);
 
 // Constant Animation Loop
 setInterval(() => {
-    snailFrame = (snailFrame % 4) + 1;
-    snail.src = `snail${snailFrame}.png`;
+    // Only animate walking if the game is still running
+    if (!isGameOver) {
+        snailFrame = (snailFrame % 4) + 1;
+        snail.src = `snail${snailFrame}.png`;
+    }
 }, 200);
 
 function startBoulder() {
@@ -65,20 +70,13 @@ function startBoulder() {
         boulder.style.left = boulderPos + 'px';
         boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
 
-        // Check if the boulder catches the snail
-        // We use a small threshold (e.g., 50px) to determine if they collide
+        // Game Over check
         if (boulderPos >= snailPos - 50) {
+            isGameOver = true; // Stop animation
             status.innerText = "Status: Game Over!";
-            
-            // 1. Change the image to the dead snail
-            snail.src = 'deadsnail.png';
-            
-            // 2. Stop the listening and the boulder movement
+            snail.src = 'deadsnail.png'; // Show dead image
             recognition.stop();
             clearInterval(boulderInterval);
-            
-            // 3. Optional: Add a visual effect (like a screen shake)
-            document.body.style.animation = "shake 0.5s";
         }
     }, 20);
 }
@@ -89,6 +87,8 @@ recognition.continuous = true;
 recognition.interimResults = true;
 
 recognition.onresult = (event) => {
+    if (isGameOver) return; // Ignore input if game is over
+
     const results = event.results[event.results.length - 1];
     const transcript = results[0].transcript.toLowerCase();
     
@@ -121,6 +121,9 @@ btn.addEventListener('click', () => {
         recognition.stop();
         btn.innerText = "Start Listening";
     } else {
+        // Reset state if restarting after game over
+        if (isGameOver) loadSentence();
+        
         recognition.start();
         startBoulder();
         btn.innerText = "Stop Listening";

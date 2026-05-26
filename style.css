@@ -20,6 +20,12 @@ body {
     overflow: hidden; /* Add this to prevent scrollbars */
 }
 
+@media (max-width: 600px) {
+    #game-wrapper {
+        transform: scale(1.0); /* Reset scale for small screens */
+    }
+}
+
 #setup-container {
     margin-top: 20px;
     text-align: center;

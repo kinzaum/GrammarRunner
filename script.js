@@ -4,18 +4,21 @@ const container = document.getElementById('sentence-container');
 const boulder = document.getElementById('boulder');
 const snail = document.getElementById('snail');
 
-const targetSentence = "I like to read";
+const targetSentence = "If you are splitting your sentence into words for your game, you should do this before or after the word-splitting logic";
 const words = targetSentence.split(" ");
 let currentWordIndex = 0;
 let isListening = false;
 
-// Positioning
+// Helpers
 let boulderPos = -200;
 let snailPos = 50;
 let boulderInterval;
-
-// Animation state
 let snailFrame = 1;
+
+// Strip punctuation so "word," matches "word"
+function cleanWord(str) {
+    return str.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+}
 
 // Initialize Sentence UI
 words.forEach((word, index) => {
@@ -27,11 +30,11 @@ words.forEach((word, index) => {
 });
 document.getElementById('word-0').classList.add('active');
 
-// CONSTANT ANIMATION LOOP (Runs all the time)
+// Animation Loop
 setInterval(() => {
     snailFrame = (snailFrame % 4) + 1;
     snail.src = `snail${snailFrame}.png`;
-}, 200); // 200ms feels like a natural walking pace
+}, 200);
 
 function startBoulder() {
     clearInterval(boulderInterval);
@@ -40,7 +43,6 @@ function startBoulder() {
         boulder.style.left = boulderPos + 'px';
         boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
 
-        // Game Over check
         if (boulderPos >= snailPos - 50) {
             status.innerText = "Status: Game Over!";
             recognition.stop();
@@ -55,14 +57,17 @@ recognition.continuous = true;
 recognition.interimResults = true;
 
 recognition.onresult = (event) => {
-    const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
-    const lastWordSpoken = transcript.split(" ").pop().toLowerCase();
-    const targetWord = words[currentWordIndex].toLowerCase();
+    // Get the full transcript from the latest result
+    const results = event.results[event.results.length - 1];
+    const transcript = results[0].transcript.toLowerCase();
     
-    if (lastWordSpoken === targetWord) {
+    // Check if the user said the target word
+    const targetWord = cleanWord(words[currentWordIndex]);
+    
+    // Check if the transcript contains the current target word
+    if (transcript.includes(targetWord)) {
         document.getElementById(`word-${currentWordIndex}`).className = 'word correct';
         
-        // TRIGGER SMOOTH MOVE
         snailPos += 80;
         snail.style.left = snailPos + 'px';
         
@@ -74,15 +79,12 @@ recognition.onresult = (event) => {
             recognition.stop();
             clearInterval(boulderInterval);
         }
-    } else {
-        document.getElementById(`word-${currentWordIndex}`).className = 'word wrong active';
     }
 };
 
 btn.addEventListener('click', () => {
     if (isListening) {
         recognition.stop();
-        clearInterval(boulderInterval);
         btn.innerText = "Start Listening";
     } else {
         recognition.start();

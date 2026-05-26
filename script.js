@@ -1,6 +1,7 @@
 const btn = document.getElementById('toggleBtn');
 const status = document.getElementById('status');
 const container = document.getElementById('sentence-container');
+const boulder = document.getElementById('boulder');
 const snail = document.getElementById('snail');
 
 const targetSentence = "I like to read";
@@ -20,27 +21,33 @@ words.forEach((word, index) => {
 
 document.getElementById('word-0').classList.add('active');
 
-function moveCharacter() {
-    let position = -150;
-    const speed = 2;
-    let frame = 1;
+function moveGameObjects() {
+    let boulderPos = -200;
+    let snailPos = 50;
+    let snailFrame = 1;
 
     // Clear any existing interval
     clearInterval(moveInterval);
 
     moveInterval = setInterval(() => {
-        position += speed;
+        boulderPos += 2;
+        snailPos += 2;
         
-        // Update horizontal position
-        snail.style.left = position + 'px'; 
+        // Move both elements
+        boulder.style.left = boulderPos + 'px';
+        snail.style.left = snailPos + 'px';
         
-        // Cycle frames: Switch image every 20 pixels of movement
-        if (position % 20 === 0) {
-            frame = (frame % 4) + 1;
-            snail.src = `snail${frame}.png`;
+        // Rotate the boulder
+        boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
+
+        // Cycle through snail frames (1-4) every 20 pixels
+        if (boulderPos % 20 === 0) {
+            snailFrame = (snailFrame % 4) + 1;
+            snail.src = `snail${snailFrame}.png`;
         }
 
-        if (position >= window.innerWidth) {
+        // End game if boulder crosses screen
+        if (boulderPos >= window.innerWidth) {
             clearInterval(moveInterval);
         }
     }, 20);
@@ -80,7 +87,7 @@ btn.addEventListener('click', () => {
         status.innerText = "Status: Idle";
     } else {
         recognition.start();
-        moveCharacter();
+        moveGameObjects();
         btn.innerText = "Stop Listening";
         status.innerText = "Status: Listening...";
     }

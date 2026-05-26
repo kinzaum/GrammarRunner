@@ -29,20 +29,28 @@ body {
     border: 1px solid #ccc;
 }
 
-#snail {
+#game-arena {
+    position: relative;
+    width: 100vw;
+    height: 200px; /* Define a fixed height for the floor */
+    margin-top: auto; /* Push this to the bottom of the flex container */
+    overflow: hidden; /* Keeps things from creating scrollbars */
+}
+
+#snail, #boulder {
     position: absolute;
-    top: 75%;
+    bottom: 0; /* Always sit on the floor of the arena */
+    transition: left 1s ease-out;
+}
+
+#snail {
     left: 50px;
     width: 150px;
     z-index: 8;
-    /* This makes the movement smooth */
-    transition: left 1s ease-out; 
 }
 
 #boulder {
-    position: absolute;
-    top: 65%;
-    left: -200px; /* Starts further off-screen */
+    left: -200px;
     width: 250px;
     z-index: 6;
 }

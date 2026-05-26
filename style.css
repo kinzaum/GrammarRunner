@@ -19,6 +19,14 @@ body {
     /* We handle rotation via JS, so no transition here */
 }
 
+#snail {
+    position: absolute;
+    top: 60%;
+    left: -150px;
+    width: 150px; /* Adjust size to fit your snail */
+    z-index: 5;
+}
+
 #sentence-container {
     background: white;
     padding: 20px 40px;

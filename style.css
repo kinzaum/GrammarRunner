@@ -32,7 +32,7 @@ body {
 #game-arena {
     position: relative;
     width: 100vw;
-    height: 200px; /* Define a fixed height for the floor */
+    height: 400px; /* Define a fixed height for the floor */
     margin-top: auto; /* Push this to the bottom of the flex container */
     overflow: hidden; /* Keeps things from creating scrollbars */
 }

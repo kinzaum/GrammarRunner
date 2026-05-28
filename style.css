@@ -14,7 +14,7 @@ body {
 
 #setup-container {
     /* Remove absolute and top positioning to let it sit in the flow */
-    position: static; 
+    position: static;
     margin-bottom: 20px;
     width: 100%;
     display: flex;
@@ -36,7 +36,7 @@ body {
     width: 100%;
     max-width: 800px;
     height: 300px;
-    margin-top: auto; 
+    margin-top: auto;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.3);
     border-bottom: 8px solid #8d6e63;
@@ -44,24 +44,23 @@ body {
 
 #snail, #boulder {
     position: absolute;
-    bottom: 0; /* Always sit on the floor of the arena */
-    transition: left 1s ease-out;
+    bottom: 0;
 }
 
 #snail {
     left: 50px;
-    width: 150px;
+    width: 50px;
     z-index: 8;
 }
 
 #boulder {
     left: -200px;
-    width: 250px;
+    width: 150px;
     z-index: 6;
 }
 
 #sentence-container {
-    position: static; 
+    position: static;
     width: 80%;
     max-width: 80%;
     margin: 20px auto; /* 'auto' centers the container */
@@ -74,24 +73,65 @@ body {
     white-space: normal;
 }
 
-.word { 
-    color: #b0bec5; 
+.word {
+    color: #b0bec5;
     font-size: 28px;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
 }
-.word.active { 
-    color: #34495e; 
-    text-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
-    font-weight: 800; 
+
+    .word.active {
+        color: #34495e;
+        text-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+        font-weight: 800;
+    }
+
+.correct {
+    color: #2ecc71;
 }
-.correct { color: #2ecc71; }
-.wrong { color: #e74c3c; animation: shake 0.3s; }
+
+.wrong {
+    color: #e74c3c;
+    animation: shake 0.3s;
+}
 
 @keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-    100% { transform: translateX(0); }
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+#victory-screen h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+#restartBtn {
+    background: #2ecc71; /* Green color for success */
+    box-shadow: 0 4px #27ae60;
+}
+
+#restartBtn, #retryBtn {
+    background: #2ecc71;
+    box-shadow: 0 4px #27ae60;
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 button {
@@ -103,13 +143,11 @@ button {
     color: white;
     cursor: pointer;
     margin-bottom: 20px;
-
     box-shadow: 0 4px #d84315; /* 3D button effect */
     transition: transform 0.1s;
 }
 
-button:active {
-    transform: translateY(4px);
-    box-shadow: none;
-}
-
+    button:active {
+        transform: translateY(4px);
+        box-shadow: none;
+    }

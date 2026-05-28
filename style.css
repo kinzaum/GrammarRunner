@@ -1,13 +1,16 @@
-body {
+html, body {
+    margin: 0;
+    padding: 0;
+    /* Force the page to only be as tall as the content */
+    min-height: 100%;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    font-family: 'Segoe UI', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+body {
     padding: 20px;
-    /* Changed from min-height: 100vh to auto to let content hug the top */
-    min-height: auto;
-    margin: 0;
 }
 
 #setup-container {
@@ -19,8 +22,15 @@ body {
     justify-content: center;
     gap: 10px;
 }
+
+/* Ensure no element stretches to fill empty space */
+#setup-container, #status, #transcript-display, #controls, #sentence-container, #game-arena {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
 html {
-    font-size: 16px;
+    font-size: 28px;
 }
 
 #userInput {
@@ -37,22 +47,28 @@ html {
     position: relative;
     width: 90%;
     max-width: 800px;
-    height: 300px;
-    margin-top: 10px; /* Tucked right under the sentence */
+    height: 300px; /* Adjusted height to fit the new image better */
+    margin-top: 20px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.3);
+    /* Use the image name you saved the file as */
+    background-image: url('Background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-bottom: 8px solid #8d6e63;
 }
 
 #snail, #boulder {
     position: absolute;
     bottom: 0;
+
 }
 
 #snail {
     left: 50px;
-    width: 50px;
+    width: 90px;
     z-index: 8;
+    transition: all 0.3s ease;
 }
 
 #boulder {
@@ -67,10 +83,10 @@ html {
     margin: 30px auto;
     text-align: center;
     background: white;
-    padding: 30px; /* Increased padding for better look */
+    padding: 30px; 
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    font-size: 32px; /* Much larger text */
+    font-size: 28px; 
 }
     #sentence-container:empty {
         display: none;
@@ -95,25 +111,6 @@ html {
 
 .wrong {
     color: #e74c3c;
-    animation: shake 0.3s;
-}
-
-@keyframes shake {
-    0% {
-        transform: translateX(0);
-    }
-
-    25% {
-        transform: translateX(-5px);
-    }
-
-    75% {
-        transform: translateX(5px);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
 }
 
 #victory-screen h1 {

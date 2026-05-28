@@ -13,6 +13,9 @@ const restartBtn = document.getElementById('restartBtn');
 const gameOverScreen = document.getElementById('game-over-screen');
 const retryBtn = document.getElementById('retryBtn');
 
+const countdownOverlay = document.getElementById('countdown-overlay');
+const countdownImg = document.getElementById('countdown-img');
+
 let words = [];
 let currentWordIndex = 0;
 let isListening = false;
@@ -40,7 +43,10 @@ function clean(str) {
     const map = {
         "two": "to",
         "too": "to",
-        "oh": "oh" // Also: removed the comma here because your regex above strips it anyway
+        "oh,": "oh", // Also: removed the comma here because your regex above strips it anyway
+        "hi,": "hi",
+        "ok": "okay",
+        "high": "hi" // Optional: in case it mishears "Hi" as "High"
     };
 
     return map[s] || s;
@@ -82,13 +88,6 @@ setInterval(() => {
     }
 }, 200);
 
-retryBtn.addEventListener('click', () => {
-    gameOverScreen.style.display = 'none';
-    loadSentence();
-    btn.innerText = "Start Listening";
-    status.innerText = "Status: Ready";
-});
-
 function startBoulder() {
     if (isBoulderPaused) return;
     clearInterval(boulderInterval);
@@ -112,13 +111,6 @@ const recognition = new SpeechRecognition();
 recognition.continuous = true;
 recognition.interimResults = true;
 
-// 3. Add the Restart logic
-restartBtn.addEventListener('click', () => {
-    victoryScreen.style.display = 'none'; // Hide the screen
-    loadSentence(); // Reset the game
-    btn.innerText = "Start Listening"; // Reset button state
-    status.innerText = "Status: Ready";
-});
 
 recognition.onresult = (event) => {
     if (isGameOver) return;
@@ -178,19 +170,56 @@ document.getElementById('readBtn').addEventListener('click', () => {
     window.speechSynthesis.speak(utterance);
 });
 
+function runCountdown(callback) {
+    countdownOverlay.style.display = 'flex';
+
+    // Sequence: 3 -> 2 -> 1
+    countdownImg.src = 'Number3.png';
+    setTimeout(() => {
+        countdownImg.src = 'Number2.png';
+        setTimeout(() => {
+            countdownImg.src = 'Number1.png';
+            setTimeout(() => {
+                countdownOverlay.style.display = 'none';
+                callback(); // Start the game logic
+            }, 1000);
+        }, 1000);
+    }, 1000);
+}
+
 btn.addEventListener('click', () => {
     if (words.length === 0) return alert("Load a sentence first!");
     if (isListening) {
         recognition.stop();
         btn.innerText = "Start Listening";
     } else {
-        // Clear any lingering pause state when starting
-        isBoulderPaused = false;
-        if (isGameOver) loadSentence();
         recognition.start();
-        startBoulder();
+        // Instead of starting immediately, run the countdown
+        runCountdown(() => {
+            isBoulderPaused = false;
+            if (isGameOver) loadSentence();
+            startBoulder();
+        });
         btn.innerText = "Stop Listening";
         status.innerText = "Status: Listening...";
     }
     isListening = !isListening;
+});
+
+// Fix for the Victory Screen Restart Button
+restartBtn.addEventListener('click', () => {
+    victoryScreen.style.display = 'none';
+    loadSentence(); // <--- Add this!
+    btn.innerText = "Start Listening";
+    status.innerText = "Status: Ready";
+    isListening = false; // Ensure the state resets
+});
+
+// Fix for the Game Over Screen Retry Button
+retryBtn.addEventListener('click', () => {
+    gameOverScreen.style.display = 'none';
+    loadSentence(); // <--- Add this!
+    btn.innerText = "Start Listening";
+    status.innerText = "Status: Ready";
+    isListening = false; // Ensure the state resets
 });

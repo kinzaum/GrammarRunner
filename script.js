@@ -29,6 +29,10 @@ let snailPos = 50;
 let boulderInterval;
 let snailFrame = 1;
 
+window.addEventListener('load', () => {
+    loadSentence();
+});
+
 // Panel Toggle Logic
 toggleSettingsBtn.addEventListener('click', () => {
     const isHidden = settingsPanel.style.display === 'none';
@@ -53,6 +57,7 @@ function clean(str) {
         "oh,": "oh",
         "hi,": "hi",
         "ok": "okay",
+        "Setup": "set up",
         "high": "hi"
     };
     return map[s] || s;
@@ -177,7 +182,7 @@ btn.addEventListener('click', () => {
     if (words.length === 0) return alert("Load a sentence first!");
     if (isListening) {
         recognition.stop();
-        btn.innerText = "Start Listening";
+        btn.innerText = "Start Reading";
         isListening = false;
     } else {
         recognition.start();
@@ -186,7 +191,7 @@ btn.addEventListener('click', () => {
             if (isGameOver) loadSentence();
             startBoulder();
         });
-        btn.innerText = "Stop Listening";
+        btn.innerText = "Stop Reading";
         status.innerText = "Status: Listening...";
         isListening = true;
     }
@@ -195,7 +200,7 @@ btn.addEventListener('click', () => {
 restartBtn.addEventListener('click', () => {
     victoryScreen.style.display = 'none';
     loadSentence();
-    btn.innerText = "Start Listening";
+    btn.innerText = "Start Reading";
     status.innerText = "Status: Ready";
     isListening = false;
 });
@@ -203,7 +208,7 @@ restartBtn.addEventListener('click', () => {
 retryBtn.addEventListener('click', () => {
     gameOverScreen.style.display = 'none';
     loadSentence();
-    btn.innerText = "Start Listening";
+    btn.innerText = "Start Reading";
     status.innerText = "Status: Ready";
     isListening = false;
 });

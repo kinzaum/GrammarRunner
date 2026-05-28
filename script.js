@@ -57,7 +57,8 @@ function clean(str) {
         "oh,": "oh",
         "hi,": "hi",
         "ok": "okay",
-        "Setup": "set up",
+        "setup": "set up",
+        "set up": "setup",
         "high": "hi"
     };
     return map[s] || s;

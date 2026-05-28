@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <title>Voice Game</title>
+    <title>Reading Game</title>
 </head>
 <body>
     <div id="setup-container">
@@ -15,6 +15,10 @@
     <div id="transcript-display" style="margin: 10px; font-style: italic; color: #555;">Transcript: </div>
 
     <div id="sentence-container"></div>
+
+    <div id="countdown-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;">
+        <img id="countdown-img" src="Number3.png" alt="Countdown" style="width: 200px;">
+    </div>
 
     <div id="controls">
         <button id="toggleBtn">Start Reading</button>

@@ -19,6 +19,13 @@
         <button id="readBtn">Read for me</button>
     </div>
 
+    <div id="sentence-container"></div>
+
+    <div id="game-arena">
+        <img id="boulder" src="Boulder.png" alt="Rolling Boulder">
+        <img id="snail" src="snail1.png" alt="Snail">
+    </div>
+
     <div id="victory-screen" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); color: white; flex-direction: column; align-items: center; justify-content: center; z-index: 1000;">
         <h1>Victory!</h1>
         <p>You escaped the boulder!</p>
@@ -30,13 +37,6 @@
         <p>The boulder caught the snail.</p>
         <button id="retryBtn">Try Again</button>
     </div>
-
-    <div id="game-arena">
-        <img id="boulder" src="Boulder.png" alt="Rolling Boulder">
-        <img id="snail" src="snail1.png" alt="Snail">
-    </div>
-
-    <div id="sentence-container"></div>
 
     <script src="script.js"></script>
 </body>

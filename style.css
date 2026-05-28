@@ -30,13 +30,13 @@ body {
 }
 
 html {
-    font-size: 28px;
+    font-size: 24px;
 }
 
 #userInput {
     /* Increased width and height */
     width: 600px;
-    height: 100px;
+    height: 80px;
     padding: 20px;
     font-size: 20px; /* Larger text inside input */
     border-radius: 15px;
@@ -79,14 +79,14 @@ html {
 
 #sentence-container {
     width: 90%;
-    max-width: 800px;
+    max-width: 600px;
     margin: 30px auto;
     text-align: center;
     background: white;
     padding: 30px; 
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    font-size: 28px; 
+    font-size: 24px; 
 }
     #sentence-container:empty {
         display: none;
@@ -137,11 +137,11 @@ html {
 
 button {
     /* Increased from 15px/30px to 25px/50px */
-    padding: 25px 50px;
+    padding: 20px 40px;
     /* Increased from 18px to 24px */
     font-size: 24px;
     border: none;
-    border-radius: 40px; /* Larger radius to match the bigger button */
+    border-radius: 30px; /* Larger radius to match the bigger button */
     background: #ff7043;
     color: white;
     cursor: pointer;

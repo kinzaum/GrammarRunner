@@ -6,15 +6,19 @@
     <title>Reading Game</title>
 </head>
 <body>
-    <div id="setup-container">
+
+    <button id="toggleSettingsBtn">Show Setup</button>
+
+    <div id="settings-panel" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px;">
         <textarea id="userInput" placeholder="Type your sentence here..."></textarea>
         <button id="updateBtn">Load Sentence</button>
     </div>
 
     <div id="status">Status: Idle</div>
-    <div id="transcript-display" style="margin: 10px; font-style: italic; color: #555;">Transcript: </div>
+
 
     <div id="sentence-container"></div>
+    <div id="transcript-display" style="margin: 10px; font-style: italic; color: #555;">Transcript: </div>
 
     <div id="countdown-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;">
         <img id="countdown-img" src="Number3.png" alt="Countdown" style="width: 200px;">
@@ -22,7 +26,7 @@
 
     <div id="controls">
         <button id="toggleBtn">Start Reading</button>
-        <button id="readBtn">Read for me</button>
+        <button id="readBtn">Help</button>
     </div>
 
     <div id="game-arena">

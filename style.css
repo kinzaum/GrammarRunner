@@ -61,7 +61,6 @@ html {
 #snail, #boulder {
     position: absolute;
     bottom: 0;
-
 }
 
 #snail {
@@ -83,11 +82,12 @@ html {
     margin: 30px auto;
     text-align: center;
     background: white;
-    padding: 30px; 
+    padding: 30px;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    font-size: 24px; 
+    font-size: 24px;
 }
+
     #sentence-container:empty {
         display: none;
     }

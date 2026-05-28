@@ -2,14 +2,23 @@ const btn = document.getElementById('toggleBtn');
 const updateBtn = document.getElementById('updateBtn');
 const inputField = document.getElementById('userInput');
 const status = document.getElementById('status');
+const transcriptDisplay = document.getElementById('transcript-display');
 const container = document.getElementById('sentence-container');
 const boulder = document.getElementById('boulder');
 const snail = document.getElementById('snail');
 
+const victoryScreen = document.getElementById('victory-screen');
+const restartBtn = document.getElementById('restartBtn');
+
+const gameOverScreen = document.getElementById('game-over-screen');
+const retryBtn = document.getElementById('retryBtn');
+
 let words = [];
 let currentWordIndex = 0;
 let isListening = false;
-let isGameOver = false; // New flag to handle game over state
+let isGameOver = false;
+
+let isBoulderPaused = false;
 
 // Positioning
 let boulderPos = -200;
@@ -17,121 +26,167 @@ let snailPos = 50;
 let boulderInterval;
 let snailFrame = 1;
 
-// Helper to strip punctuation for accurate voice matching
+// Single source of truth for cleaning logic
+function clean(str) {
+    if (!str) return "";
 
-function cleanWord(str) {
-    return str.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+    // THIS LINE WAS MISSING
+    let s = str.toLowerCase();
+
+    s = s.replace(/[^a-z0-9\s]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const map = {
+        "two": "to",
+        "too": "to",
+        "oh": "oh" // Also: removed the comma here because your regex above strips it anyway
+    };
+
+    return map[s] || s;
 }
-
-// Function to load the sentence from the text area
-
 function loadSentence() {
-    const text = inputField.value.trim();
+    const text = inputField.value.trim().replace(/[—–]/g, ",");
     if (!text) return alert("Please type a sentence first!");
 
-    // Reset game state
     container.innerHTML = "";
     currentWordIndex = 0;
-    isGameOver = false; // Reset game over flag
+    isGameOver = false;
     words = text.split(" ");
-  
-    // Create UI elements for words
+
     words.forEach((word, index) => {
         const span = document.createElement('span');
         span.innerText = word + (index < words.length - 1 ? " " : "");
         span.className = 'word';
         span.id = `word-${index}`;
+        span.dataset.cleanWord = clean(word);
         container.appendChild(span);
     });
-    
+
     document.getElementById('word-0').classList.add('active');
-   
-    // Reset positions
+
     boulderPos = -200;
     snailPos = 50;
     boulder.style.left = boulderPos + 'px';
     snail.style.left = snailPos + 'px';
     status.innerText = "Status: Ready";
+    transcriptDisplay.innerText = "Transcript: ";
 }
+
 updateBtn.addEventListener('click', loadSentence);
 
-// Constant Animation Loop
 setInterval(() => {
-    // Only animate walking if the game is still running
     if (!isGameOver) {
         snailFrame = (snailFrame % 4) + 1;
         snail.src = `snail${snailFrame}.png`;
     }
 }, 200);
 
+retryBtn.addEventListener('click', () => {
+    gameOverScreen.style.display = 'none';
+    loadSentence();
+    btn.innerText = "Start Listening";
+    status.innerText = "Status: Ready";
+});
+
 function startBoulder() {
+    if (isBoulderPaused) return;
     clearInterval(boulderInterval);
     boulderInterval = setInterval(() => {
         boulderPos += 1;
         boulder.style.left = boulderPos + 'px';
         boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
-        // Game Over check
         if (boulderPos >= snailPos - 50) {
-            isGameOver = true; // Stop animation
+            isGameOver = true;
             status.innerText = "Status: Game Over!";
-            snail.src = 'deadsnail.png'; // Show dead image
+            snail.src = 'deadsnail.png';
             recognition.stop();
             clearInterval(boulderInterval);
+            gameOverScreen.style.display = 'flex';
         }
-    }, 20);
+    }, 50);
 }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.continuous = true;
 recognition.interimResults = true;
-// Change the recognition logic to process the entire transcript
+
+// 3. Add the Restart logic
+restartBtn.addEventListener('click', () => {
+    victoryScreen.style.display = 'none'; // Hide the screen
+    loadSentence(); // Reset the game
+    btn.innerText = "Start Listening"; // Reset button state
+    status.innerText = "Status: Ready";
+});
+
 recognition.onresult = (event) => {
-    if (isGameOver) return; 
+    if (isGameOver) return;
 
-    // Get the full transcript from the latest result
-    let fullTranscript = "";
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-        fullTranscript += event.results[i][0].transcript.toLowerCase();
-    }
+    // Get the latest phrase spoken
+    let latestResult = event.results[event.results.length - 1][0].transcript.toLowerCase();
+    transcriptDisplay.innerText = "Transcript: " + latestResult;
 
-    // Check if the current target word exists anywhere in the recent speech
-    const targetWord = cleanWord(words[currentWordIndex]);
-    
-    if (fullTranscript.includes(targetWord)) {
-        // Mark current word as correct
+    let target = document.getElementById(`word-${currentWordIndex}`).dataset.cleanWord;
+    // Clean ONLY the latest bit of audio
+    let spoken = clean(latestResult);
+
+    // Use exact equality or check if the latest phrase contains the target word
+    if (spoken === target || spoken.includes(target)) {
         const wordElement = document.getElementById(`word-${currentWordIndex}`);
         if (wordElement && !wordElement.classList.contains('correct')) {
             wordElement.className = 'word correct';
-            
-            // Move snail forward
-            snailPos += 80;
+            snailPos += 20;
             snail.style.left = snailPos + 'px';
-        
             currentWordIndex++;
-            
-            // Activate next word
+
+            isBoulderPaused = false;
+
             if (currentWordIndex < words.length) {
                 document.getElementById(`word-${currentWordIndex}`).classList.add('active');
-            } else {
+            }
+            else {
                 status.innerText = "Status: Escaped!";
                 recognition.stop();
                 clearInterval(boulderInterval);
+                // Show victory screen
+                victoryScreen.style.display = 'flex';
             }
         }
     }
 };
 
+document.getElementById('readBtn').addEventListener('click', () => {
+    // Get the current word element text
+    const currentWordEl = document.getElementById(`word-${currentWordIndex}`);
+    if (!currentWordEl) return;
+
+    // Clean the word for pronunciation (remove extra bits)
+    const wordToRead = currentWordEl.innerText.trim();
+
+    // Stop the boulder
+    isBoulderPaused = true;
+    clearInterval(boulderInterval);
+
+    // Read the word
+    const utterance = new SpeechSynthesisUtterance(wordToRead);
+    utterance.onend = () => {
+        // When reading finishes, restart the boulder
+        isBoulderPaused = false;
+        startBoulder();
+    };
+    window.speechSynthesis.speak(utterance);
+});
+
 btn.addEventListener('click', () => {
     if (words.length === 0) return alert("Load a sentence first!");
-   
     if (isListening) {
         recognition.stop();
         btn.innerText = "Start Listening";
     } else {
-        // Reset state if restarting after game over
+        // Clear any lingering pause state when starting
+        isBoulderPaused = false;
         if (isGameOver) loadSentence();
-       
         recognition.start();
         startBoulder();
         btn.innerText = "Stop Listening";

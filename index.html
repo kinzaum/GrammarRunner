@@ -8,15 +8,17 @@
 </head>
 <body>
 
-    <button id="toggleSettingsBtn">Show Setup</button>
+    <div id="banner-container">
+        <img id="banner-img" src="banner.png" alt="Snail vs Boulder Run Banner">
+        <button id="toggleSettingsBtn">Show Setup</button>
+    </div>
 
     <div id="settings-panel" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px;">
-        <textarea id="userInput" placeholder="Type you sentence here">To type or paste your own sentences use the Show Setup Button above!</textarea>
+        <textarea id="userInput" placeholder="Type your sentence here">To type or paste your own sentences use the Show Setup Button above!</textarea>
         <button id="updateBtn">Load Sentence</button>
     </div>
 
     <div id="status">Status: Idle</div>
-
 
     <div id="sentence-container"></div>
     <div id="transcript-display" style="margin: 10px; font-style: italic; color: #555;">Transcript: </div>

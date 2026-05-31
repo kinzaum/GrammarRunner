@@ -19,7 +19,7 @@ body {
 #banner-container {
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 650px;
     margin: 0 auto;
     overflow: hidden; 
 }
@@ -77,7 +77,7 @@ body {
 #game-arena {
     position: relative;
     width: 90%;
-    max-width: 600px;
+    max-width: 650px;
     height: 220px;
     margin-top: 10px;
     overflow: hidden;
@@ -108,14 +108,14 @@ body {
 
 #sentence-container {
     width: 90%;
-    max-width: 600px;
-    margin: 15px auto;
+    max-width: 615px;
+    margin: 5px auto;
     text-align: center;
     background: white;
-    padding: 30px;
+    padding: 20px;
     border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    font-size: 28px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    font-size: 20px;
 }
 
 .word {
@@ -143,14 +143,14 @@ body {
 }
 
 button {
-    padding: 20px 40px;
-    font-size: 24px;
+    padding: 10px 20px;
+    font-size: 20px;
     border: none;
     border-radius: 30px;
     background: #ff7043;
     color: white;
     cursor: pointer;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     box-shadow: 0 6px #d84315;
     transition: transform 0.1s;
 }
@@ -170,8 +170,4 @@ button:active {
 #victory-screen h1 {
     font-size: 48px;
     margin-bottom: 10px;
-}
-
-#status, #transcript-display {
-    margin: 10px 0;
 }

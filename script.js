@@ -1,7 +1,6 @@
 const btn = document.getElementById('toggleBtn');
 const updateBtn = document.getElementById('updateBtn');
 const inputField = document.getElementById('userInput');
-const status = document.getElementById('status');
 const transcriptDisplay = document.getElementById('transcript-display');
 const container = document.getElementById('sentence-container');
 const boulder = document.getElementById('boulder');
@@ -57,8 +56,7 @@ function clean(str) {
         "oh,": "oh",
         "hi,": "hi",
         "ok": "okay",
-        "setup": "set up",
-        "set up": "setup",
+        "Setup": "set up",
         "high": "hi"
     };
     return map[s] || s;
@@ -88,7 +86,6 @@ function loadSentence() {
     snailPos = 50;
     boulder.style.left = boulderPos + 'px';
     snail.style.left = snailPos + 'px';
-    status.innerText = "Status: Ready";
     transcriptDisplay.innerText = "Transcript: ";
 }
 
@@ -108,7 +105,6 @@ function startBoulder() {
         boulder.style.transform = `rotate(${boulderPos * 2}deg)`;
         if (boulderPos >= snailPos - 50) {
             isGameOver = true;
-            status.innerText = "Status: Game Over!";
             snail.src = 'deadsnail.png';
             recognition.stop();
             clearInterval(boulderInterval);
@@ -142,7 +138,6 @@ recognition.onresult = (event) => {
             if (currentWordIndex < words.length) {
                 document.getElementById(`word-${currentWordIndex}`).classList.add('active');
             } else {
-                status.innerText = "Status: Escaped!";
                 recognition.stop();
                 clearInterval(boulderInterval);
                 victoryScreen.style.display = 'flex';
@@ -193,7 +188,6 @@ btn.addEventListener('click', () => {
             startBoulder();
         });
         btn.innerText = "Stop Reading";
-        status.innerText = "Status: Listening...";
         isListening = true;
     }
 });
@@ -202,7 +196,6 @@ restartBtn.addEventListener('click', () => {
     victoryScreen.style.display = 'none';
     loadSentence();
     btn.innerText = "Start Reading";
-    status.innerText = "Status: Ready";
     isListening = false;
 });
 
@@ -210,6 +203,5 @@ retryBtn.addEventListener('click', () => {
     gameOverScreen.style.display = 'none';
     loadSentence();
     btn.innerText = "Start Reading";
-    status.innerText = "Status: Ready";
     isListening = false;
 });

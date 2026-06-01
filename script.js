@@ -7,6 +7,7 @@ const boulder = document.getElementById('boulder');
 const snail = document.getElementById('snail');
 const victoryScreen = document.getElementById('victory-screen');
 const restartBtn = document.getElementById('restartBtn');
+const nextBtn = document.getElementById('nextBtn');
 const gameOverScreen = document.getElementById('game-over-screen');
 const retryBtn = document.getElementById('retryBtn');
 const countdownOverlay = document.getElementById('countdown-overlay');
@@ -27,6 +28,41 @@ let boulderPos = -200;
 let snailPos = 50;
 let boulderInterval;
 let snailFrame = 1;
+
+let sentences = [
+    // Level 1: Very Simple (Basic nouns/verbs)
+    "The cat is on the mat.", "I like to read a book.", "The dog can run fast.", 
+    "She has a red apple.", "He plays with a ball.", "The sun is very hot.", 
+    "I see a big blue bird.", "They like to eat cake.", "My mom is very kind.", 
+    "The car is not small.",
+
+    // Level 2: Simple Phrases
+    "I go to school every day.", "We like to play outside.", "The water is very cold.", 
+    "Do you have a pet dog?", "I can jump up and down.", "The trees are very tall.", 
+    "Please sit in the chair.", "He likes to drink milk.", "They are happy to play.", 
+    "The store is open today.",
+
+    // Level 3: Intermediate Actions
+    "I am learning how to speak.", "The teacher helps the class.", "We walk to the park now.", 
+    "Do you like to eat pizza?", "She writes in her notebook.", "The weather is nice today.", 
+    "I can help you with that.", "They listen to the music.", "My friend has a new car.", 
+    "We need to go home soon.",
+
+    // Level 4: Descriptive & Compound
+    "I love reading stories about animals.", "The brave snail moves very slowly.", 
+    "Please bring your lunch to school.", "Can you show me the way home?", 
+    "The library has many great books.", "They enjoy walking in the rain.", 
+    "We are planning a fun trip soon.", "He reads a book before he sleeps.", 
+    "It is important to study English.", "The garden has beautiful flowers.",
+
+    // Level 5: Slightly Complex
+    "Success comes to those who work hard.", "Reading improves your vocabulary skills.", 
+    "The boulder rolls down the steep hill.", "I try my best every single day.", 
+    "Learning a new language is fun.", "She practices her reading every night.", 
+    "The snail is faster than a rock.", "Do you want to practice together?", 
+    "Every sentence helps you get better.", "Keep going, you are doing great!"
+];
+let currentSentenceIndex = 0;
 
 window.addEventListener('load', () => {
     loadSentence();
@@ -63,14 +99,16 @@ function clean(str) {
 }
 
 function loadSentence() {
-    const text = inputField.value.trim().replace(/[—–]/g, ",");
-    if (!text) return alert("Please type a sentence first!");
+    // 1. Get the current sentence from the list
+    const text = sentences[currentSentenceIndex].trim().replace(/[—–]/g, ",");
 
+    // 2. Clear the container and reset game state
     container.innerHTML = "";
     currentWordIndex = 0;
     isGameOver = false;
     words = text.split(" ");
 
+    // 3. Create the word spans
     words.forEach((word, index) => {
         const span = document.createElement('span');
         span.innerText = word + (index < words.length - 1 ? " " : "");
@@ -82,12 +120,41 @@ function loadSentence() {
 
     document.getElementById('word-0').classList.add('active');
 
+    // 4. Reset physics
     boulderPos = -200;
     snailPos = 50;
     boulder.style.left = boulderPos + 'px';
     snail.style.left = snailPos + 'px';
     transcriptDisplay.innerText = "Transcript: ";
 }
+
+// Ensure your Next Sentence button listener is this
+
+nextBtn.addEventListener('click', () => {
+    // 1. Stop current game activity
+    recognition.stop();
+    clearInterval(boulderInterval);
+    isListening = false;
+    btn.innerText = "Start Reading";
+    
+    // 2. Determine if we are using the user's input or the default list
+    const inputContent = inputField.value.trim();
+    const source = (inputContent && inputContent !== "To type or paste your own sentences use the Show Setup Button!") 
+                   ? inputContent.split('\n').filter(s => s.trim() !== "") 
+                   : sentences;
+    
+    // 3. Move to the next index
+    currentSentenceIndex = (currentSentenceIndex + 1) % source.length;
+    
+    // 4. Update the global 'sentences' for loadSentence to use
+    // If the user provided custom text, update our dynamic list
+    if (inputContent && inputContent !== "To type or paste your own sentences use the Show Setup Button!") {
+        sentences = source; 
+    }
+    
+    // 5. Reload the game UI
+    loadSentence();
+});
 
 setInterval(() => {
     if (!isGameOver) {

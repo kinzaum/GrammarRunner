@@ -1,3 +1,4 @@
+/* --- Global Styles --- */
 html, body {
     margin: 0;
     padding: 0;
@@ -5,17 +6,14 @@ html, body {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     display: flex;
     flex-direction: column;
-    /* Changed to stretch so elements respect their own width settings */
-    align-items: stretch; 
+    align-items: center; 
 }
 
 body {
     padding: 20px;
-    align-items: center; /* Keeps children centered horizontally */
 }
 
-/* --- Banner and Button Layout --- */
-
+/* --- Banner --- */
 #banner-container {
     position: relative;
     width: 100%;
@@ -30,38 +28,15 @@ body {
     display: block;
 }
 
-#toggleSettingsBtn {
-    position: absolute;
-    right: 3%; 
-    top: 50%;
-    transform: translateY(-50%);
-    
-    /* Styling */
-    padding: 10px 20px;
-    background-color: #7f8c8d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    z-index: 10;
-}
-
-#toggleSettingsBtn:hover {
-    background-color: #95a5a6;
-}
-
-#toggleSettingsBtn:active {
-    transform: translateY(calc(-50% + 2px)); /* Adjusts for transform */
-    box-shadow: none;
-}
-
-/* --- Game Elements --- */
-
+/* --- Settings Panel --- */
 #settings-panel {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 #userInput {
@@ -74,6 +49,7 @@ body {
     box-sizing: border-box;
 }
 
+/* --- Game Arena --- */
 #game-arena {
     position: relative;
     width: 90%;
@@ -106,6 +82,7 @@ body {
     z-index: 6;
 }
 
+/* --- Sentence Display --- */
 #sentence-container {
     width: 90%;
     max-width: 615px;
@@ -118,39 +95,28 @@ body {
     font-size: 20px;
 }
 
-.word {
-    color: #b0bec5;
-    font-size: 40px;
-    transition: all 0.3s ease;
-}
-
-.word.active {
-    color: #34495e;
-    text-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
-    font-weight: 800;
-}
-
+.word { color: #b0bec5; font-size: 40px; transition: all 0.3s ease; }
+.word.active { color: #34495e; text-shadow: 0 0 8px rgba(52, 152, 219, 0.5); font-weight: 800; }
 .correct { color: #2ecc71; }
 .wrong { color: #e74c3c; }
 
 /* --- Controls and Buttons --- */
-
 #controls {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     margin-top: 10px;
+    flex-wrap: wrap; /* This ensures all buttons stay visible */
 }
 
 button {
-    padding: 10px 20px;
+    padding: 15px 30px; /* Adjusted padding to help them fit */
     font-size: 20px;
     border: none;
     border-radius: 30px;
     background: #ff7043;
     color: white;
     cursor: pointer;
-    margin-bottom: 5px;
     box-shadow: 0 6px #d84315;
     transition: transform 0.1s;
 }
@@ -160,14 +126,12 @@ button:active {
     box-shadow: none;
 }
 
+.secondary-btn {
+    background: #3498db;
+    box-shadow: 0 6px #2980b9;
+}
+
 #restartBtn, #retryBtn {
     background: #2ecc71;
     box-shadow: 0 4px #27ae60;
-}
-
-/* --- Overlays --- */
-
-#victory-screen h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
 }
